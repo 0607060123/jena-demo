@@ -1,14 +1,15 @@
 package org.lennon.triples.simple;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class LoadTest {
 
+	private static String testFile = "data/movies.csv";
+
 	@Test
-	public void testLoadCsvStream() {
-		fail("Not yet implemented");
+	public void testLoadCsvStream() throws Exception {
+		RdfGraph graph = RdfGraph.loadFromCsv(testFile);
+		graph.dumpTriples();
 	}
 
 }
