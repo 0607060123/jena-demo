@@ -8,8 +8,8 @@ public class LoadTest {
 
 	@Test
 	public void testLoadCsvStream() throws Exception {
-		RdfGraph graph = RdfGraph.loadFromCsv(testFile);
+		RdfGraph graph = new RdfGraph();
+		graph.loadFromCsv(testFile);
 		graph.dumpTriples();
 	}
-
 }

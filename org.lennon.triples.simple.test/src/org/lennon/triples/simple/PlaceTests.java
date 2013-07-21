@@ -9,6 +9,21 @@ import org.junit.Test;
 
 public class PlaceTests {
 
+	public class PlacesGraph extends RdfGraph {
+
+		/**
+		 * We know that the object in an "inside" triple should itself
+		 * be an RdfEntity, not just a String. Make it so.
+		 */
+		@Override
+		public void add(RdfTriple t) {
+			if (t.getPredicate().equals(INSIDE_PREDICATE)) {
+				RdfEntity o = new RdfEntity((String) t.getObject());
+				super.add(new RdfTriple(t.getSubject(), INSIDE_PREDICATE, o));
+			}
+		}
+	}
+
 	private static final String PLACES_FILE = "data/place_triples.txt";
 	private static final String NEW_HAMPSHIRE_ID = "New_Hampshire";
 	private static final String INSIDE_PREDICATE = "inside";
@@ -16,7 +31,8 @@ public class PlaceTests {
 
 	@Before
 	public void setup() throws Exception {
-		placesGraph = RdfGraph.loadFromCsv(PLACES_FILE);
+		placesGraph = new PlacesGraph();
+		placesGraph.loadFromCsv(PLACES_FILE);
 	}
 
 	@Test

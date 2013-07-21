@@ -52,14 +52,13 @@ public class RdfGraph {
 	}
 
 	/**
-	 * Return a new RdfGraph instance loaded with the triple data from the
-	 * specified CSV file.
+	 * Add the triple data from the specified CSV file to the existing
+	 * triples in this graph instance.
 	 * @param csvFile file containing triples, one per line.
 	 * @throws IOException if CSV file does not exist, is not well formed,
 	 *         cannot be read, etc.
 	 */
-	public static RdfGraph loadFromCsv(String csvFile) throws IOException {
-		RdfGraph graph = new RdfGraph();
+	public void loadFromCsv(String csvFile) throws IOException {
 		try (BufferedReader csvIn = new BufferedReader(new FileReader(csvFile))) {
 			String line;
 			while ((line = csvIn.readLine()) != null) {
@@ -68,9 +67,8 @@ public class RdfGraph {
 					System.err.println("Skipping badly formatted line: " + line);
 					continue;
 				}
-				graph.add(new RdfTriple(new RdfEntity(spo[0]), spo[1], spo[2]));
+				add(new RdfTriple(new RdfEntity(spo[0]), spo[1], spo[2]));
 			}
-			return graph;
 		}
 	}
 
