@@ -1,6 +1,8 @@
 package org.lennon.triples.simple;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class MovieTests {
 	@Test
 	public void testFindBladeRunnerByTitle() {
 		String title = RdfMovieGraph.BLADE_RUNNER_TITLE;
-		List<RdfTriple> movies = movieGraph.queryByPredicate(RdfMovieGraph.TITLE_PREDICATE);
+		List<RdfTriple> movies = movieGraph.queryByTriple(null, RdfMovieGraph.TITLE_PREDICATE, RdfMovieGraph.BLADE_RUNNER_TITLE);
 		for (RdfTriple movie : movies) {
 			if (movie.getObject().equals(title)) {
 				assertEquals(movie.getSubject(), bladeRunner);
@@ -34,13 +36,14 @@ public class MovieTests {
 
 	@Test
 	public void testDirectedByRidleyScott() {
-		String directedBy = RdfMovieGraph.DIRECTED_BY_PREDICATE;
-		List<RdfTriple> movies = movieGraph.queryByPredicate(RdfMovieGraph.DIRECTED_BY_PREDICATE);
+		List<RdfTriple> movies = movieGraph.queryByTriple(null, RdfMovieGraph.DIRECTED_BY_PREDICATE, ridleyScott);
+		boolean foundBladeRunner = false;
 		for (RdfTriple movie : movies) {
-			if (movie.getObject().equals(ridleyScott)) {
-				assertEquals(movie.getSubject(), bladeRunner);
+			assertTrue(movie.getObject().equals(ridleyScott));
+			if (movie.getSubject().equals(bladeRunner)) {
+				foundBladeRunner = true;
 			}
 		}
-		fail("Could not find Blade Runner");
+		assertTrue("Could not find Blade Runner", foundBladeRunner);
 	}
 }

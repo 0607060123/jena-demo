@@ -1,9 +1,17 @@
 package org.lennon.triples.simple;
 
+/**
+ * An entity in an RDF graph.
+ */
 public class RdfEntity {
 
 	private final String id;
 
+	/**
+	 * Instance an entity with the specified unique id.
+	 * @param id this entity's id; must be unique within the
+	 * containing graph.
+	 */
 	public RdfEntity(String id) {
 		this.id = id;
 	}

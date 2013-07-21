@@ -1,27 +1,47 @@
 package org.lennon.triples.simple;
 
+/**
+ * RDF triple: subject, predicate, object.
+ */
 public class RdfTriple {
 
 	private final RdfEntity s;
 	private final String p;
 	private final Object o;
+	private int hash;
 
+	/**
+	 * Instantiate new triple.
+	 * @param s subject
+	 * @param p predicate
+	 * @param o object; may be any type (String, Date, etc.).
+	 *  Can be type RdfEntity, in which case 
+	 */
 	public RdfTriple(RdfEntity s, String p, Object o) {
 		this.s = s;
 		this.p = p;
 		this.o = o;
 	}
 
+	/**
+	 * Get this triple's subject.
+	 */
 	public RdfEntity getSubject() {
 		return s;
 	}
 
-	public Object getObject() {
-		return o;
-	}
-
+	/**
+	 * Get this triple's predicate.
+	 */
 	public String getPredicate() {
 		return p;
+	}
+
+	/**
+	 * Get this triple's object.
+	 */
+	public Object getObject() {
+		return o;
 	}
 
 	@Override
@@ -37,11 +57,13 @@ public class RdfTriple {
 
 	@Override
 	public int hashCode() {
-		int result = 17;
-		result = 31 * result + s.hashCode();
-		result = 31 * result + p.hashCode();
-		result = 31 * result + o.hashCode();
-		return result;
+		if (hash == 0) {
+			hash = 17;
+			hash = 31 * hash + s.hashCode();
+			hash = 31 * hash + p.hashCode();
+			hash = 31 * hash + o.hashCode();
+		}
+		return hash;
 	}
 
 	@Override

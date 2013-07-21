@@ -1,12 +1,8 @@
 package org.lennon.triples.simple;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,27 +12,55 @@ public class RdfGraph {
 
 	private Set<RdfTriple> triples = new HashSet<RdfTriple>();
 
+	/**
+	 * Add the specified triple to this graph.
+	 * Duplicates are automatically eliminated.
+	 */
 	public void add(RdfTriple t) {
 		triples.add(t);
 	}
 
+	/**
+	 * Is the specified triple in this graph?
+	 */
 	public boolean contains(RdfTriple t) {
 		return triples.contains(t);
 	}
 
-	public List<RdfTriple> queryByPredicate(String pred) {
+	public List<RdfTriple> queryByTriple(RdfEntity s, String p, Object o) {
 		List<RdfTriple> results = new ArrayList<RdfTriple>();
 		for (RdfTriple triple : triples) {
-			if (triple.getPredicate().equals(pred)) {
+			if (matches(triple, s, p, o)) {
 				results.add(triple);
 			}
 		}
 		return results;
 	}
 
-	public static RdfGraph loadFromCsv(String testFile) throws IOException {
+	private static boolean matches(RdfTriple t, RdfEntity s, String p, Object o) {
+		// If query subject is not null, must match the triple's subject
+		if (s != null && ! t.getSubject().equals(s)) {
+			return false;
+		}
+		if (p != null && ! t.getPredicate().equals(p)) {
+			return false;
+		}
+		if (o != null && ! t.getObject().equals(o)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Return a new RdfGraph instance loaded with the triple data from the
+	 * specified CSV file.
+	 * @param csvFile file containing triples, one per line.
+	 * @throws IOException if CSV file does not exist, is not well formed,
+	 *         cannot be read, etc.
+	 */
+	public static RdfGraph loadFromCsv(String csvFile) throws IOException {
 		RdfGraph graph = new RdfGraph();
-		try (BufferedReader csvIn = new BufferedReader(new FileReader(testFile))) {
+		try (BufferedReader csvIn = new BufferedReader(new FileReader(csvFile))) {
 			String line;
 			while ((line = csvIn.readLine()) != null) {
 				String[] spo = line.split(",", 3);
