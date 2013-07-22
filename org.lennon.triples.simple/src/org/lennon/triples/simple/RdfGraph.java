@@ -77,4 +77,12 @@ public class RdfGraph {
 			System.out.println(triple);
 		}
 	}
+
+	public void applyInferenceRule(RdfInferenceRule rule) {
+		for (RdfTriple t : rule.query(this)) {
+			for (RdfTriple x : rule.makeTriples(t)) {
+				add(x);
+			}
+		}
+	}
 }
