@@ -1,5 +1,6 @@
 package org.lennon.jena.demo;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -7,6 +8,10 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.VCARD;
 
+/**
+ * Working on Jena tutorial:
+ *     http://jena.apache.org/tutorials
+ */
 public class MyCard {
 	private static final String MATT_URI = "http://lennon.org/ns/matt_lennon";
 	private static final String MATT_FULL_NAME = "Matt Lennon";
@@ -21,6 +26,12 @@ public class MyCard {
 						.addProperty(VCARD.Given, MATT_GIVEN_NAME)
 						.addProperty(VCARD.Family, MATT_FAMILY_NAME));
 		printResource(matt, "");
+		System.out.println("==========");
+		printModel(model);
+	}
+
+	private static void printModel(Model m) {
+		m.write(System.out);
 	}
 
 	private static void printResource(Resource r, String indent) {
@@ -31,6 +42,8 @@ public class MyCard {
 			System.out.format("%s%s=%s\n", indent, stmt.getPredicate(), stmt.getObject());
 			if (stmt.getObject() instanceof Resource) {
 				printResource(stmt.getResource(), indent);
+			} else {
+				assert(stmt.getObject() instanceof Literal);
 			}
 		}
 	}
