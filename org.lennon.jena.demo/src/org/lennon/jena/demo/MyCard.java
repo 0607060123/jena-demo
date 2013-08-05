@@ -26,7 +26,7 @@ public class MyCard {
 						.addProperty(VCARD.Given, MATT_GIVEN_NAME)
 						.addProperty(VCARD.Family, MATT_FAMILY_NAME));
 		printResource(matt, "");
-		System.out.println("==========");
+		System.out.println("===========");
 		printModel(model);
 	}
 
