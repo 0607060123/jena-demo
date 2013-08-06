@@ -11,7 +11,7 @@ public class ReadRDF {
 
 	public static void main(String[] args) throws Exception {
 		Model m = ModelFactory.createDefaultModel();
-		InputStream rin = new FileInputStream(new File("vc-db-1.rdf"));
+		InputStream rin = new FileInputStream(new File("data/vc-db-1.rdf"));
 		m.read(rin, null);
 		m.write(System.out);
 	}
